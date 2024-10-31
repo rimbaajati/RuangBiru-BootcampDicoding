@@ -7,27 +7,69 @@
     <title>Ruang Biru</title>
 
     <link rel="stylesheet" href="css/style.css">
-
     
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-KgOneZX9sVnqIMEGRwVazMxPVYdsios&callback=initMap" async defer></script>
+    <script>
+        // Data berita untuk lokasi tertentu
+        const newsData = {
+            'Jakarta': 'Berita terbaru dari Jakarta: Menjadi pusat perhatian setelah pemilihan umum.',
+            'Bandung': 'Berita terbaru dari Bandung: Festival musik tahun ini sangat meriah.',
+            'Surabaya': 'Berita terbaru dari Surabaya: Penemuan sejarah baru di kawasan kota tua.',
+            'New York': 'Berita terbaru dari New York: Ekonomi kota mulai pulih setelah pandemi.',
+            'London': 'Berita terbaru dari London: Pemerintah mengumumkan kebijakan baru untuk meningkatkan transportasi umum.',
+            'Tokyo': 'Berita terbaru dari Tokyo: Jepang menyambut pembukaan Olimpiade Musim Panas 2024.',
+            'Berlin': 'Berita terbaru dari Berlin: Jerman memperkenalkan inisiatif energi terbarukan.',
+            'Sydney': 'Berita terbaru dari Sydney: Festival seni tahunan menarik pengunjung dari seluruh dunia.',
+            'Cairo': 'Berita terbaru dari Kairo: Pertemuan puncak negara-negara Arab membahas masalah regional.'
+        };
+
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 2,
+                center: { lat: 20, lng: 0 }, // Koordinat pusat dunia
+            });
+
+            // Lokasi yang ditandai
+            const locations = [
+                { name: 'Jakarta', lat: -6.1751, lng: 106.8650 },
+                { name: 'Bandung', lat: -6.9175, lng: 107.6191 },
+                { name: 'Surabaya', lat: -7.2750, lng: 112.6410 },
+                { name: 'New York', lat: 40.7128, lng: -74.0060 },
+                { name: 'London', lat: 51.5074, lng: -0.1278 },
+                { name: 'Tokyo', lat: 35.6762, lng: 139.6503 },
+                { name: 'Berlin', lat: 52.5200, lng: 13.4050 },
+                { name: 'Sydney', lat: -33.8688, lng: 151.2093 },
+                { name: 'Cairo', lat: 30.0444, lng: 31.2357 }
+            ];
+
+            // Menambahkan marker dan event listener
+            locations.forEach(location => {
+                const marker = new google.maps.Marker({
+                    position: { lat: location.lat, lng: location.lng },
+                    map: map,
+                    title: location.name
+                });
+
+                marker.addListener('click', () => {
+                    document.getElementById('news').innerHTML = `<h3>${location.name}</h3><p>${newsData[location.name]}</p>`;
+                });
+            });
+        }
+    </script>
 </head>
 
 <body>
     <!-- Header Start -->
     <header>
-
         <div class="head">
-
             <div class="menu-icon">☰</div>
-
             <div class="logo">
                 <h1>Ruang Biru</h1>
             </div>
-
             <form class="search-bar" id="search-form">
                 <input type="search" id="search-input">
                 <button type="submit">Cari</button>
             </form>
-
         </div>
 
         <nav class="nav-list">
@@ -40,7 +82,7 @@
                 <li><a href='#'>Bussines</a></li>
                 <li><a href='#'>Automotive</a></li>
                 <li><a href='#'>Sport</a></li>
-                <li><a href='#'>Entertaiment</a></li>
+                <li><a href='#'>Entertainment</a></li>
                 <li><a href='#'>Weather</a></li>
                 <li>
                     <a href='#'>More</a>
@@ -52,21 +94,14 @@
                 </li>
             </ul>
         </nav>
-
     </header>
     <!-- Header End -->
     
     <!-- Main Start -->
     <main>
-
         <div class="content">
-
             <section class="latest-news">
-
-                <!-- <h2>Latest New</h2> -->
-
                 <div class="left">
-
                     <article>
                         <img src="img/prabowo.jpg" alt="Prabowo Subiato">
                         <h3>President Prabowo Rallies Cabinet for Food Security and Capital Project</h3>
@@ -74,63 +109,64 @@
                         <a class="read-more" href="#">Read More</a>
                     </article>
 
+                    <article>
+                        <img src="img/prabowo.jpg" alt="Prabowo Subiato">
+                        <h3>President Prabowo Rallies Cabinet for Food Security and Capital Project</h3>
+                        <p>President Prabowo led a four-day retreat to unify his cabinet’s vision, focusing on achieving food self-sufficiency and accelerating the development of the new capital, Nusantara, within the next four years.</p>
+                        <a class="read-more" href="#">Read More</a>
+                    </article>
                 </div>
                 
                 <div class="right">
-
                     <article>
                         <img src="img/gaza.jpeg" alt="Gaza">
                         <h3>Middle East Conflict Escalations</h3>
-                        <p>he ongoing Israel-Hamas war continues to dominate global headlines, with recent escalations involving Israeli airstrikes in Gaza that have led to significant civilian casualties. International concerns over humanitarian conditions have increased, especially with the UN calling for an end to what they term as a “blatant disregard for basic humanity” due to the impact on civilians, particularly in northern Gaza​ GLOBAL ISSUES.</p>
+                        <p>The ongoing Israel-Hamas war continues to dominate global headlines, with recent escalations involving Israeli airstrikes in Gaza that have led to significant civilian casualties...</p>
                     </article>
 
                     <article>
                         <img src="img/Ukraina.jpeg" alt="Zelenski">
                         <h3>Ukrainian Conflict Developments</h3>
-                        <p>In Ukraine, the World Bank has initiated a new funding mechanism involving grants and assets from various nations to support Ukraine’s economic recovery amid the conflict with Russia. This fund aims to provide an estimated $50 billion to help Ukraine manage and rebuild its infrastructure damaged in the ongoing war</p>
+                        <p>In Ukraine, the World Bank has initiated a new funding mechanism involving grants and assets from various nations to support Ukraine’s economic recovery...</p>
                     </article>
-
                 </div>
+
+                <!-- Aside Start -->
+                <aside>
+                    <h3>Peta Lokasi</h3>
+                    <div id="map" style="height: 200px; width: 100%;"></div>
+                    <div class="news" id="news" style="margin-top: 20px;"></div>
+                </aside>
+                <!-- Aside End -->
 
             </section>
 
             <section class="popular-article">
-
                 <h2>Popular Article</h2>
-
                 <article>
                     <h3>Global Wildlife Report</h3>
-                    <p>A new World Wildlife Fund report reveals a drastic 70% decline in wildlife populations globally since 1970, highlighting an urgent need for conservation efforts. This report comes as world leaders prepare for COP16, where biodiversity credits and climate action will be at the forefront of discussions</p>
-                    <img src="img/wildlife.jpeg">
+                    <p>A new World Wildlife Fund report reveals a drastic 70% decline in wildlife populations globally since 1970...</p>
+                    <img src="img/wildlife.jpeg" alt="Global Wildlife">
                 </article>
 
                 <article>
                     <h3>Escalating Violence in Sudan</h3>
-                    <p>The UN's top humanitarian official in Sudan has expressed grave concerns over a recent spike in violence in the Al Jazirah state, with over 120 lives lost due to attacks attributed to the Rapid Support Forces (RSF)</p>
-                    <img src="img/sudan.jpeg">
+                    <p>The UN's top humanitarian official in Sudan has expressed grave concerns over a recent spike in violence in the Al Jazirah state...</p>
+                    <img src="img/sudan.jpeg" alt="Sudan Violence">
                 </article>
 
                 <article>
                     <h3>Climate Resilience Strategies at COP16</h3>
-                    <p>At the ongoing COP16 conference, discussions have centered on biodiversity credits as potential solutions to climate challenges, despite ongoing controversies surrounding financing for these initiatives</p>
-                    <img src="img/climate.jpeg">
+                    <p>At the ongoing COP16 conference, discussions have centered on biodiversity credits as potential solutions to climate challenges...</p>
+                    <img src="img/climate.jpeg" alt="Climate Resilience">
                 </article>
-
             </section>
-
         </div>
-
-        <aside>
-
-        </aside>
-
     </main>
     <!-- Main End -->
 
     <!-- Footer Start -->
-
-    required "partials/footer.html"
-
+    
     <!-- Footer End -->
 </body>
 </html>
